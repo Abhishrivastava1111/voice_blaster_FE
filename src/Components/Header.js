@@ -30,8 +30,7 @@ const NavHeader = () => {
         if (response.data.success == false) {
           // toast.error(response.data.message);
         } else {
-          setProfileInfo(response.data.data);
-          console.log("profileinfo", response.data.data);
+          setProfileInfo(response.data.data) ; 
           // toast.success(response.data.message);
         }
       })
@@ -61,12 +60,12 @@ const NavHeader = () => {
           // }
         } else {
           // toast.success(response.data.message);
-          console.log("website info", response.data.data);
+          //console.log("website info", response.data.data);
           // localStorage.setItem("user",response.data.data);
           // localStorage.setItem("token", response.data.data.token);
 
           setLogo(response.data.data.logo);
-          console.log("response.data.data", response.data.data);
+          //console.log("response.data.data", response.data.data);
           // navigate("/")
 
           if (response.data.data.status != "Active") {
@@ -81,19 +80,19 @@ const NavHeader = () => {
 
   const toggleTheme = () => {
     const theme = localStorage.getItem("theme");
-    console.log("theme", theme);
+    //console.log("theme", theme);
     if (theme == "light-theme") {
       localStorage.setItem("theme", "dark-theme");
       var theme2 = localStorage.getItem("theme");
 
       document.body.className = theme2;
-      console.log("document.body.className", document.body.className);
+      //console.log("document.body.className", document.body.className);
       // window.location.reload();
     } else {
       localStorage.setItem("theme", "light-theme");
       var theme2 = localStorage.getItem("theme");
       document.body.className = theme2;
-      console.log("document.body.className", document.body.className);
+      //console.log("document.body.className", document.body.className);
 
       // window.location.reload();
     }

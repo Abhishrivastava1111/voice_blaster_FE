@@ -182,6 +182,7 @@ const CampaignReport = () => {
         .toLowerCase()
         .includes(filterText.toLowerCase())
   );
+
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -479,7 +480,7 @@ const CampaignReport = () => {
               </span>
               <br />
               <br />
-              <span>Audio:</span>&nbsp;&nbsp;&nbsp;
+              <span>Audio :</span>&nbsp;&nbsp;&nbsp;
               <span>
                 {" "}
                 {viewCompaing?.audio_file !== undefined ? (
@@ -516,7 +517,7 @@ const CampaignReport = () => {
               <span>Created By:</span>&nbsp;&nbsp;&nbsp;
               <span>
                 {viewCompaing?.createBy_user_details !== undefined &&
-                viewCompaing?.createBy_user_details?.length > 0
+                  viewCompaing?.createBy_user_details?.length > 0
                   ? viewCompaing.createBy_user_details[0].name
                   : ""}
               </span>

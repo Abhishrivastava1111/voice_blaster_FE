@@ -18,7 +18,8 @@ const SendWhatsapp = () => {
   const [numbercounter, setNumberCounter] = useState("");
   const [mobile_no, setMobile_No] = useState("");
   const [count, setCount] = useState(0);
-  const [audio, setAudio] = useState(undefined);
+  const [audios, setAudios] = useState([]);
+  const [audioId, setAudioId] = useState('');
   const [contactGroupData, setContactGroupData] = useState([]);
   const [values, setValues] = useState(initialState);
   const [isloading, setLoading] = useState(false);
@@ -61,57 +62,36 @@ const SendWhatsapp = () => {
 
   const OnSubmit = () => {
     setLoading(true);
-    // const BASE_URL = process.env.REACT_APP_BASE_URL;
-    //  const   obj = {
-    //         contact_no: mobile_no,
-    //         msg_count: count,
-    //         audio_file: audio
-    //     }
-
-    if (audio == undefined) {
+    if (!audioId) {
       toast.error("audio is mandatory");
       setLoading(false);
       return;
     }
 
-    // if (audio[0].size > maxFileSize) {
-    //   toast.error("Audio size must be of 5MB or Less");
-    //   setLoading(false);
-    //   return;
-    // }
-    // console.log("audio size is:",audio[0].size);
-
-    let formData = new FormData();
-    formData.append("contact_no", mobile_no);
-    formData.append("msg_count", count);
-    formData.append("audio", audio[0]);
-
-    console.log("submitted");
-
     const token = localStorage.getItem("token");
-
     axios
-      .post(`${BASE_URL}admin/addSendMessage`, formData, {
-        headers: {
-          "x-access-token": `${token}`,
-          "Content-Type": "multipart/form-data",
-          version: "1.0.0",
+      .post(`${BASE_URL}admin/addSendMessage`,
+        {
+          "contact_no": mobile_no,
+          "msg_count": count,
+          "audio_id": audioId
         },
-      })
+        {
+          headers: {
+            "x-access-token": `${token}`,
+            "Content-Type": "Application/json",
+            version: "1.0.0",
+          },
+        })
       .then((response) => {
         if (response.data.success == false) {
           toast.error(response.data.message);
           setLoading(false);
-          // console.log(response.data.message);
         } else {
-          //toast.success("Submitted successfully")
           toast.success(response.data.message);
           setLoading(false);
           setNumberCounter("");
-          //setAudio("");
           setMobile_No("");
-          setAudio("");
-          console.log(response.data.message);
         }
       })
       .catch((error) => {
@@ -195,11 +175,33 @@ const SendWhatsapp = () => {
     reader.readAsText(e.target.files[0]);
   };
 
-  useEffect(() => {
-    GetAllContactGroup();
-    const theme = localStorage.getItem("theme");
-    document.body.className = theme;
-  }, []);
+
+
+
+  const getApprovedAudios = () => {
+
+    const token = localStorage.getItem("token");
+    axios
+      .get(
+        `${BASE_URL}admin/getUserApprovedAudios`,
+        {
+          headers: {
+            "x-access-token": `${token}`,
+            version: "1.0.0",
+            "Content-Type": "Application/json",
+          },
+        }
+      )
+      .then((response) => {
+        setAudios(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+  }//end of GetAllAudios
+
   const GetAllContactGroup = () => {
     const token = localStorage.getItem("token");
     axios
@@ -227,6 +229,14 @@ const SendWhatsapp = () => {
         console.log(error);
       });
   };
+
+
+  useEffect(() => {
+    getApprovedAudios();
+    GetAllContactGroup();
+    const theme = localStorage.getItem("theme");
+    document.body.className = theme;
+  }, []);
 
   return (
     <>
@@ -293,25 +303,22 @@ const SendWhatsapp = () => {
                         onChange={(e) => RowCount(e.target.value)}
                         name="mobile_no"
                         value={mobile_no}
-                        // onChange={handleChange}
+                      // onChange={handleChange}
                       ></textarea>
                     </div>
 
                     <div className="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-2 mt-2">
-                      <label className="m-2">Upload Audio:-</label>
+                      <label className="m-2">Select Audio:-</label>
                     </div>
                     <div className="col-9 col-xs-9 col-sm-9 col-md-9 col-lg-4 mt-2">
-                      <input
-                        type="file"
-                        className="form-control inputType"
-                        name="audio"
-                        accept=".mp3"
-                        // value={audio}
-                        // onChange={(e)=>uploadAudio(e)}
-
-                        onChange={(e) => setAudio(e.target.files)}
-                        // onChange={handleChange}
-                      />
+                      <select className="form-select" onChange={(e) => setAudioId(e.target.value)}>
+                        <option disabled selected>select audio</option>
+                        {
+                          audios.map((audio) => (
+                            <option value={audio.audio_id}>{audio.audio_file_display_name}</option>
+                          ))
+                        }
+                      </select>
                     </div>
                   </div>
 
@@ -326,7 +333,7 @@ const SendWhatsapp = () => {
                         name="numbercounter"
                         value={count}
                         disabled
-                        // onChange={handleChange}
+                      // onChange={handleChange}
                       />
                     </div>
                     <div className="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-2 mt-2"></div>
@@ -398,7 +405,7 @@ const SendWhatsapp = () => {
                       <button
                         type="button"
                         className="btn btn-primary  inputType"
-                        // onClick={() => OnSubmit()}
+                      // onClick={() => OnSubmit()}
                       >
                         <i
                           className="fa fa-spinner fa-spin"
@@ -408,7 +415,7 @@ const SendWhatsapp = () => {
                     ) : (
                       <button
                         type="button"
-                        className="btn btn-primary  inputType"
+                        className="btn btn-primary"
                         onClick={() => OnSubmit()}
                       >
                         Submit

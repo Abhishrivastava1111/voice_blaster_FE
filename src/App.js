@@ -37,6 +37,9 @@ import Profile from "./Pages/Profile";
 import ChangePassword from "./Components/changePassword";
 import AdminSupport from "./Pages/Admin/AdminSupport";
 import UserTransactionLog from "./Pages/Reseller/UserTransaction";
+import GetAudioAprroval from "./Pages/Reseller/GetAudioApproval";
+import AudioApprovalStatus from "./Pages/Reseller/AudioApprovalStatus";
+import AdminAudioApproval from "./Pages/Admin/AdminAudioApproval";
 // import Notes from './Pages/User/Notes';
 const App = () => {
   const router = createBrowserRouter([
@@ -65,6 +68,14 @@ const App = () => {
       element: <SendWhatsapp />,
     },
     {
+      path : "/get-audio-approval",
+      element : <GetAudioAprroval/>
+    } ,     
+    {
+      path : "/audio-approval-status",
+      element : <AudioApprovalStatus/>
+    } , 
+    {
       path: "/contact-group",
       element: <ContactGroup />,
     },
@@ -88,6 +99,10 @@ const App = () => {
       path: "/admin-campaign-report",
       element: <AdminCampaignReport />,
     },
+    {
+      path : "/admin-audio-approvals" , 
+      element : <AdminAudioApproval/>
+    } , 
     {
       path: "/admin_notes",
       element: <AdminNotes />,

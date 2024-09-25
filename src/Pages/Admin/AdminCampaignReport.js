@@ -69,7 +69,7 @@ const AdminCampaignReport = () => {
   const [file, setFile] = useState(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const limit = 10;
+  const limit = 2;
   const [id, setId] = useState("");
   // const [id1 , setId1]=useState("");
   const [show, setShow] = useState(false);
@@ -133,9 +133,7 @@ const AdminCampaignReport = () => {
           // toast.error(response.data.message);
         } else {
           setCampaignReport(response.data.data.data);
-
           console.log("admin report", response.data.data);
-
           //  setItems(response.data.items);
           setTotalPages(response.data.data.totalPages);
 
@@ -311,6 +309,23 @@ const AdminCampaignReport = () => {
     );
   }, [filterText, resetPaginationToggle]);
 
+
+  const preNextBtn = (displayText , compareToHide ) => {
+    return (
+      <div style={{
+        "margin" : "10px",
+        fontSize : "1.2rem",
+        cursor : "pointer",
+        display : currentPage == compareToHide ? "none" : "block" ,
+      
+       }} 
+       onClick={()=>handlePageChange(currentPage - ( compareToHide == 1 ? 1 : -1 ) )}
+       >
+        {displayText} 
+       </div>
+    )
+  }
+
   const columns = [
     // {
     //   name: "Profile image",
@@ -381,7 +396,6 @@ const AdminCampaignReport = () => {
     <>
       <div id="main-wrapper">
         <Header />
-
         <Sidebar />
         <div className=" content-body " style={{ height: "100vh" }}>
           <div className="page-titles  ">
@@ -512,9 +526,13 @@ const AdminCampaignReport = () => {
                       })}
                   </tbody>
                 </table>
-
-                <div>
-                  {Array.from({ length: totalPages }, (_, index) => (
+                <div className="d-flex justify-content-end align-items-center" style={{ "padding": "5px" }}>
+                  { preNextBtn("<<" , 1 ) }
+                  <div style={{ "marginRight": "10px" }}>
+                    page {currentPage} of {totalPages}
+                  </div>
+                  { preNextBtn(">>" , totalPages ) }
+                  {/* {Array.from({ length: totalPages }, (_, index) => (
                     <button
                       key={index}
                       onClick={() => handlePageChange(index + 1)}
@@ -523,7 +541,13 @@ const AdminCampaignReport = () => {
                     >
                       {index + 1}
                     </button>
-                  ))}
+                  ))} */}
+                  <div>
+                    <select className="form-select" onChange={(e)=> handlePageChange(e.target.value) }>
+                      <option disabled selected>go to page</option>
+                      {Array(totalPages).fill().map((_ , index)=> index + 1).map((pageNo) => <option  disabled={currentPage == pageNo} value={pageNo}>{pageNo}</option>)}
+                    </select>
+                  </div>
                 </div>
                 {/* <div className="table-responsive active-projects style-1 ItemsCheckboxSec shorting ">
                   <div className="tbl-caption">
@@ -665,9 +689,9 @@ const AdminCampaignReport = () => {
 
               onChange={(e) => setFile(e.target.files)}
 
-              // name="filename"
-              // value={filename}
-              // onChange={(e) => setFillName(e.target.files)}
+            // name="filename"
+            // value={filename}
+            // onChange={(e) => setFillName(e.target.files)}
             />
           </div>
         </Modal.Body>
@@ -811,7 +835,7 @@ const AdminCampaignReport = () => {
           <span>Created By:</span>&nbsp;&nbsp;&nbsp;
           <span>
             {viewCompaing?.createBy_user_details != undefined &&
-            viewCompaing?.createBy_user_details?.length > 0
+              viewCompaing?.createBy_user_details?.length > 0
               ? viewCompaing.createBy_user_details[0].name
               : ""}
           </span>
@@ -936,7 +960,7 @@ const AdminCampaignReport = () => {
               <span>Created By:</span>&nbsp;&nbsp;&nbsp;
               <span>
                 {viewCompaing?.createBy_user_details != undefined &&
-                viewCompaing?.createBy_user_details?.length > 0
+                  viewCompaing?.createBy_user_details?.length > 0
                   ? viewCompaing.createBy_user_details[0].name
                   : ""}
               </span>
