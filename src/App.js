@@ -40,6 +40,7 @@ import UserTransactionLog from "./Pages/Reseller/UserTransaction";
 import GetAudioAprroval from "./Pages/Reseller/GetAudioApproval";
 import AudioApprovalStatus from "./Pages/Reseller/AudioApprovalStatus";
 import AdminAudioApproval from "./Pages/Admin/AdminAudioApproval";
+import AdminNotifications from "./Pages/Admin/AdminNotification";
 // import Notes from './Pages/User/Notes';
 const App = () => {
   const router = createBrowserRouter([
@@ -102,6 +103,10 @@ const App = () => {
     {
       path : "/admin-audio-approvals" , 
       element : <AdminAudioApproval/>
+    } , 
+    {
+      path : "/admin-notification-alert" , 
+      element : <AdminNotifications/>
     } , 
     {
       path: "/admin_notes",

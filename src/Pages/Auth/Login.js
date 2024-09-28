@@ -1,39 +1,45 @@
 import React, { memo, useEffect, useState } from "react";
-
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import { ValidEmail } from "../../functions/validationFunction";
+
+// Popup Component
+const NotificationPopup = ({ onClose }) => {
+  return (
+    <div className="notification-popup">
+      <div className="popup-content">
+        <p>Welcome! You have successfully logged in.</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+};
 
 const Login = () => {
   const navigate = useNavigate();
-
-  // const navigate=useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [logo, setLogo] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-
   const Login = () => {
-    let obj = {
+    const obj = {
       email: email,
-      role:3,
+      role: 3,
       password: password,
     };
+
     if (!ValidEmail(email)) {
       toast.error("Enter Valid Email");
       return;
     }
-    if (password.length == "") {
-      toast.error("password is rquired to login");
+    if (password.length === 0) {
+      toast.error("Password is required to login");
       return;
     }
-    // if (password.length > 6 || password.length < 4) {
-    //   toast.error("password is incorrect");
-    //   return;
-    // }
+
     axios
       .post(`${BASE_URL}auth/login`, obj, {
         headers: {
@@ -45,26 +51,32 @@ const Login = () => {
           toast.error(response.data.message);
         } else {
           toast.success(response.data.message);
-          //console.log(response.data.message);
-          localStorage.setItem("user", response.data.data);
+          localStorage.setItem("user", JSON.stringify(response.data.data));
           localStorage.setItem("token", response.data.data.token);
           localStorage.setItem("role", response.data.data.role);
           localStorage.setItem("theme", "light-theme");
-          //console.log("response.data.data", response.data.data);
+
+          // Show the popup if it's the first login
+          if (!localStorage.getItem("popupDisplayed")) {
+            setShowPopup(true);
+            localStorage.setItem("popupDisplayed", "true");
+          }
+
           navigate("/");
           window.location.reload();
         }
       })
       .catch(function (error) {
-        toast.error(error);
+        toast.error(error.message);
       });
   };
+
   useEffect(() => {
     getWebsiteInfo();
   }, []);
-  
+
   const getWebsiteInfo = () => {
-    let token2 = localStorage.getItem("token");
+    const token2 = localStorage.getItem("token");
     axios
       .get(`${BASE_URL}admin/getWebsiteInfo`, {
         headers: {
@@ -76,38 +88,48 @@ const Login = () => {
       .then(function (response) {
         if (response.data.success === false) {
           toast.error(response.data.message);
-
           if (response.data?.error_code === 461) {
             navigate("/login");
           }
         } else {
-          // toast.success(response.data.message);
-          // console.log(response.data.message);
-          // localStorage.setItem("user",response.data.data);
-          // localStorage.setItem("token", response.data.data.token);
-
           setLogo(response.data.data.logo);
-          // console.log("response.data.data", response.data.data);
-          // navigate("/")
-
           if (response.data.data.status !== "Active") {
             navigate("/page-not-found");
           }
-
         }
       })
       .catch(function (error) {
-        toast.error(error);
+        toast.error(error.message);
       });
   };
+
+  // Close popup handler
+  const handlePopupClose = () => {
+    setShowPopup(false);
+  };
+
+  // Close popup if clicked outside
+  const handleClickOutside = (event) => {
+    const popup = document.querySelector('.notification-popup');
+    if (popup && !popup.contains(event.target)) {
+      handlePopupClose();
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener for clicks
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Clean up the event listener
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <div className="authincation h-100">
         <div className="container h-100">
-          <div
-            className="row justify-content-center h-100 align-items-center"
-            style={{ marginTop: "50px" }}
-          >
+          <div className="row justify-content-center h-100 align-items-center" style={{ marginTop: "50px" }}>
             <div className="col-md-6">
               <div className="authincation-content">
                 <div className="row no-gutters">
@@ -115,33 +137,23 @@ const Login = () => {
                     <div className="auth-form">
                       <div className="text-center mb-3">
                         <a href="index-2.html">
-                          <img src={logo} alt />
+                          <img src={logo} alt="Logo" />
                         </a>
                       </div>
-                      <h4 className="text-center mb-4">Sign In your account</h4>
-                      {/* <form action="https://w3crm.dexignzone.com/xhtml/index.html"> */}
-                      {/* <div className="mb-3">
-                    <label className="mb-1"><strong>Username</strong></label>
-                    <input type="text" className="form-control" placeholder="username" />
-                  </div> */}
+                      <h4 className="text-center mb-4">Sign In to your account</h4>
                       <div className="mb-3">
-                        <label className="mb-1">
-                          <strong>Email</strong>
-                        </label>
+                        <label className="mb-1"><strong>Email</strong></label>
                         <input
                           type="email"
                           className="form-control"
                           placeholder="Enter Email"
                           name="email"
                           value={email}
-                          onChange={(e) =>setEmail(e.target.value)}
+                          onChange={(e) => setEmail(e.target.value)}
                         />
-                        {/*  */}
                       </div>
                       <div className="mb-3">
-                        <label className="mb-1">
-                          <strong>Password</strong>
-                        </label>
+                        <label className="mb-1"><strong>Password</strong></label>
                         <input
                           type="password"
                           className="form-control"
@@ -155,15 +167,11 @@ const Login = () => {
                         <button
                           type="button"
                           className="btn btn-primary btn-block"
-                          onClick={() => Login()}
+                          onClick={Login}
                         >
                           Sign In
                         </button>
                       </div>
-                      {/* </form> */}
-                      {/* <div className="new-account mt-3">
-                  <p>Already have an account? <a className="text-primary" href="page-login.html">Sign in</a></p>
-                </div> */}
                     </div>
                   </div>
                 </div>
@@ -172,6 +180,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {showPopup && <NotificationPopup onClose={handlePopupClose} />}
     </>
   );
 };
