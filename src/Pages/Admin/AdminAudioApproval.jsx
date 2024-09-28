@@ -95,7 +95,7 @@ function AdminAudioApproval() {
                 {
                     audio.status != "pending" ?
                         <button title="change status to pending" className="btn btn-warning m-1" onClick={() => { acceptReject(audio.audio_id, "pending") }}>
-                            <i class="fa-regular fa-bell"></i>
+                            <i class="fa-solid fa-circle-exclamation"></i>
                         </button>
                         : ''
                 }
@@ -244,7 +244,6 @@ function AdminAudioApproval() {
                                                                     </>
                                                                     :
                                                                     ' '
-
                                                                 }
                                                             </div>
                                                         </td>
