@@ -48,18 +48,40 @@ const Sidebar = () => {
                     />
                   </svg>
                 </div>
-                <span className="nav-text" style={{ color: "#6c757d" }}>Dashboard</span>
+                <span className="nav-text" style={{ color: "#6c757d" }}>
+                  Dashboard
+                </span>
               </a>
             </li>
             {role == 3 ? (
               <li>
                 <a href="/admin-audio-approvals" aria-expanded="false">
                   <div className="menu-icon">
-                    <svg width={24} height={24} viewBox="0 -2 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke="#888888" d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2" />
-                      <path stroke="#888888" fill-rule="evenodd" d="M12 3v10h-1V3z" />
-                      <path stroke="#888888" d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z" />
-                      <path stroke="#888888" fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5" />
+                    <svg
+                      width={24}
+                      height={24}
+                      viewBox="0 -2 18 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke="#888888"
+                        d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"
+                      />
+                      <path
+                        stroke="#888888"
+                        fill-rule="evenodd"
+                        d="M12 3v10h-1V3z"
+                      />
+                      <path
+                        stroke="#888888"
+                        d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"
+                      />
+                      <path
+                        stroke="#888888"
+                        fill-rule="evenodd"
+                        d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"
+                      />
                     </svg>
                   </div>
                   <span className="nav-text">Audio Approvals</span>
@@ -71,59 +93,156 @@ const Sidebar = () => {
               <li>
                 <a href="/get-audio-approval" aria-expanded="false">
                   <div className="menu-icon">
-                    <svg width={24} height={24} viewBox="0 -2 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke="#888888" strokeLinecap="round" strokeLinejoin="round" fillRule="evenodd" clipRule="evenodd" d="M11 6.64a1 1 0 0 0-1.243-.97l-1 .25A1 1 0 0 0 8 6.89v4.306A2.6 2.6 0 0 0 7 11c-.5 0-.974.134-1.338.377-.36.24-.662.628-.662 1.123s.301.883.662 1.123c.364.243.839.377 1.338.377s.974-.134 1.338-.377c.36-.24.662-.628.662-1.123V8.89l2-.5z" />
-                      <path stroke="#888888" strokeLinecap="round" strokeLinejoin="round" d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                    <svg
+                      width={24}
+                      height={24}
+                      viewBox="0 -2 18 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke="#888888"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M11 6.64a1 1 0 0 0-1.243-.97l-1 .25A1 1 0 0 0 8 6.89v4.306A2.6 2.6 0 0 0 7 11c-.5 0-.974.134-1.338.377-.36.24-.662.628-.662 1.123s.301.883.662 1.123c.364.243.839.377 1.338.377s.974-.134 1.338-.377c.36-.24.662-.628.662-1.123V8.89l2-.5z"
+                      />
+                      <path
+                        stroke="#888888"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"
+                      />
                     </svg>
                   </div>
                   <span className="nav-text">Get Audio Approval</span>
                 </a>
               </li>
-
             ) : null}
 
             {role != 3 ? (
               <li>
                 <a href="/audio-approval-status" aria-expanded="false">
                   <div className="menu-icon">
-                    <svg width={24} height={24} viewBox="0 -2 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke="#888888" d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2" />
-                      <path stroke="#888888" fill-rule="evenodd" d="M12 3v10h-1V3z" />
-                      <path stroke="#888888" d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z" />
-                      <path stroke="#888888" fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5" />
+                    <svg
+                      width={24}
+                      height={24}
+                      viewBox="0 -2 18 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke="#888888"
+                        d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"
+                      />
+                      <path
+                        stroke="#888888"
+                        fill-rule="evenodd"
+                        d="M12 3v10h-1V3z"
+                      />
+                      <path
+                        stroke="#888888"
+                        d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"
+                      />
+                      <path
+                        stroke="#888888"
+                        fill-rule="evenodd"
+                        d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"
+                      />
                     </svg>
                   </div>
                   <span className="nav-text">Audio Approval Status</span>
                 </a>
               </li>
-
             ) : null}
 
             {role != 3 ? (
               <li>
                 <a href="/send-voice-msg" className aria-expanded="false">
                   <div className="menu-icon">
-                    <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" clipRule="evenodd" d="M14.7379 2.76181H8.08493C6.00493 2.75381 4.29993 4.41181 4.25093 6.49081V17.2038C4.20493 19.3168 5.87993 21.0678 7.99293 21.1148C8.02393 21.1148 8.05393 21.1158 8.08493 21.1148H16.0739C18.1679 21.0298 19.8179 19.2998 19.8029 17.2038V8.03781L14.7379 2.76181Z" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M14.4751 2.75V5.659C14.4751 7.079 15.6231 8.23 17.0431 8.234H19.7981" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M14.2882 15.3585H8.88818" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M12.2432 11.606H8.88721" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M14.7379 2.76181H8.08493C6.00493 2.75381 4.29993 4.41181 4.25093 6.49081V17.2038C4.20493 19.3168 5.87993 21.0678 7.99293 21.1148C8.02393 21.1148 8.05393 21.1158 8.08493 21.1148H16.0739C18.1679 21.0298 19.8179 19.2998 19.8029 17.2038V8.03781L14.7379 2.76181Z"
+                        stroke="#888888"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M14.4751 2.75V5.659C14.4751 7.079 15.6231 8.23 17.0431 8.234H19.7981"
+                        stroke="#888888"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M14.2882 15.3585H8.88818"
+                        stroke="#888888"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M12.2432 11.606H8.88721"
+                        stroke="#888888"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </div>
                   <span className="nav-text">Send Voice SMS </span>
                 </a>
               </li>
-
             ) : null}
             {role != 3 ? (
               <li>
                 <a href="/contact-group" className aria-expanded="false">
                   <div className="menu-icon">
-                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.79222 13.9396C12.1738 13.9396 15.0641 14.452 15.0641 16.4989C15.0641 18.5458 12.1931 19.0729 8.79222 19.0729C5.40972 19.0729 2.52039 18.5651 2.52039 16.5172C2.52039 14.4694 5.39047 13.9396 8.79222 13.9396Z" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" />
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.79223 11.0182C6.57206 11.0182 4.77173 9.21874 4.77173 6.99857C4.77173 4.7784 6.57206 2.97898 8.79223 2.97898C11.0115 2.97898 12.8118 4.7784 12.8118 6.99857C12.8201 9.21049 11.0326 11.0099 8.82064 11.0182H8.79223Z" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" />
-                      <path d="M15.1095 9.9748C16.5771 9.76855 17.7073 8.50905 17.7101 6.98464C17.7101 5.48222 16.6147 4.23555 15.1782 3.99997" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" />
-                      <path d="M17.0458 13.5045C18.4675 13.7163 19.4603 14.2149 19.4603 15.2416C19.4603 15.9483 18.9928 16.4067 18.2374 16.6936" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" />
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 22 22"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M8.79222 13.9396C12.1738 13.9396 15.0641 14.452 15.0641 16.4989C15.0641 18.5458 12.1931 19.0729 8.79222 19.0729C5.40972 19.0729 2.52039 18.5651 2.52039 16.5172C2.52039 14.4694 5.39047 13.9396 8.79222 13.9396Z"
+                        stroke="#888888"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M8.79223 11.0182C6.57206 11.0182 4.77173 9.21874 4.77173 6.99857C4.77173 4.7784 6.57206 2.97898 8.79223 2.97898C11.0115 2.97898 12.8118 4.7784 12.8118 6.99857C12.8201 9.21049 11.0326 11.0099 8.82064 11.0182H8.79223Z"
+                        stroke="#888888"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M15.1095 9.9748C16.5771 9.76855 17.7073 8.50905 17.7101 6.98464C17.7101 5.48222 16.6147 4.23555 15.1782 3.99997"
+                        stroke="#888888"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M17.0458 13.5045C18.4675 13.7163 19.4603 14.2149 19.4603 15.2416C19.4603 15.9483 18.9928 16.4067 18.2374 16.6936"
+                        stroke="#888888"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
                     </svg>
                   </div>
                   <span className="nav-text">Contact Group </span>
@@ -164,11 +283,6 @@ const Sidebar = () => {
                 </a>
               </li>
             ) : null}
-
-
-
-
-
 
             {role == 3 ? (
               <li>
@@ -355,9 +469,27 @@ const Sidebar = () => {
               <li>
                 <a href="/support" className aria-expanded="false">
                   <div className="menu-icon">
-                    <svg width={22} height={22} viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" clipRule="evenodd" d="M14.9732 2.52102H7.0266C4.25735 2.52102 2.52118 4.48177 2.52118 7.25651V14.7438C2.52118 17.5186 4.2491 19.4793 7.0266 19.4793H14.9723C17.7507 19.4793 19.4795 17.5186 19.4795 14.7438V7.25651C19.4795 4.48177 17.7507 2.52102 14.9732 2.52102Z" stroke="#888888" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M7.73657 11.0002L9.91274 13.1754L14.2632 8.82493" stroke="#888888" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg
+                      width={22}
+                      height={22}
+                      viewBox="0 0 22 22"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M14.9732 2.52102H7.0266C4.25735 2.52102 2.52118 4.48177 2.52118 7.25651V14.7438C2.52118 17.5186 4.2491 19.4793 7.0266 19.4793H14.9723C17.7507 19.4793 19.4795 17.5186 19.4795 14.7438V7.25651C19.4795 4.48177 17.7507 2.52102 14.9732 2.52102Z"
+                        stroke="#888888"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M7.73657 11.0002L9.91274 13.1754L14.2632 8.82493"
+                        stroke="#888888"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </div>
                   <span className="nav-text">Support</span>
@@ -497,7 +629,6 @@ const Sidebar = () => {
               </li>
             ) : null}
 
-
             {role == 3 ? (
               <li>
                 <a href="/transaction-log" className aria-expanded="false">
@@ -585,11 +716,28 @@ const Sidebar = () => {
               <li>
                 <a href="/adminsupport" className aria-expanded="false">
                   <div className="menu-icon">
-                    <svg width={22} height={22} viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" clipRule="evenodd" d="M14.9732 2.52102H7.0266C4.25735 2.52102 2.52118 4.48177 2.52118 7.25651V14.7438C2.52118 17.5186 4.2491 19.4793 7.0266 19.4793H14.9723C17.7507 19.4793 19.4795 17.5186 19.4795 14.7438V7.25651C19.4795 4.48177 17.7507 2.52102 14.9732 2.52102Z" stroke="#888888" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M7.73657 11.0002L9.91274 13.1754L14.2632 8.82493" stroke="#888888" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg
+                      width={22}
+                      height={22}
+                      viewBox="0 0 22 22"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M14.9732 2.52102H7.0266C4.25735 2.52102 2.52118 4.48177 2.52118 7.25651V14.7438C2.52118 17.5186 4.2491 19.4793 7.0266 19.4793H14.9723C17.7507 19.4793 19.4795 17.5186 19.4795 14.7438V7.25651C19.4795 4.48177 17.7507 2.52102 14.9732 2.52102Z"
+                        stroke="#888888"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M7.73657 11.0002L9.91274 13.1754L14.2632 8.82493"
+                        stroke="#888888"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
-
                   </div>
                   <span className="nav-text">Support</span>
                 </a>
@@ -654,7 +802,6 @@ const Sidebar = () => {
                 </a>
               </li>
             ) : null}
-
           </ul>
           {/* <div className="help-desk">
             <a href="javascript:void(0)" className="btn btn-primary">

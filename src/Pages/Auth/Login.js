@@ -4,24 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ValidEmail } from "../../functions/validationFunction";
 
-// Popup Component
-const NotificationPopup = ({ onClose }) => {
-  return (
-    <div className="notification-popup">
-      <div className="popup-content">
-        <p>Welcome! You have successfully logged in.</p>
-        <button onClick={onClose}>Close</button>
-      </div>
-    </div>
-  );
-};
-
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [logo, setLogo] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const Login = () => {
@@ -55,12 +42,6 @@ const Login = () => {
           localStorage.setItem("token", response.data.data.token);
           localStorage.setItem("role", response.data.data.role);
           localStorage.setItem("theme", "light-theme");
-
-          // Show the popup if it's the first login
-          if (!localStorage.getItem("popupDisplayed")) {
-            setShowPopup(true);
-            localStorage.setItem("popupDisplayed", "true");
-          }
 
           navigate("/");
           window.location.reload();
@@ -103,33 +84,14 @@ const Login = () => {
       });
   };
 
-  // Close popup handler
-  const handlePopupClose = () => {
-    setShowPopup(false);
-  };
-
-  // Close popup if clicked outside
-  const handleClickOutside = (event) => {
-    const popup = document.querySelector('.notification-popup');
-    if (popup && !popup.contains(event.target)) {
-      handlePopupClose();
-    }
-  };
-
-  useEffect(() => {
-    // Add event listener for clicks
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // Clean up the event listener
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
     <>
       <div className="authincation h-100">
         <div className="container h-100">
-          <div className="row justify-content-center h-100 align-items-center" style={{ marginTop: "50px" }}>
+          <div
+            className="row justify-content-center h-100 align-items-center"
+            style={{ marginTop: "50px" }}
+          >
             <div className="col-md-6">
               <div className="authincation-content">
                 <div className="row no-gutters">
@@ -140,9 +102,13 @@ const Login = () => {
                           <img src={logo} alt="Logo" />
                         </a>
                       </div>
-                      <h4 className="text-center mb-4">Sign In to your account</h4>
+                      <h4 className="text-center mb-4">
+                        Sign In to your account
+                      </h4>
                       <div className="mb-3">
-                        <label className="mb-1"><strong>Email</strong></label>
+                        <label className="mb-1">
+                          <strong>Email</strong>
+                        </label>
                         <input
                           type="email"
                           className="form-control"
@@ -153,7 +119,9 @@ const Login = () => {
                         />
                       </div>
                       <div className="mb-3">
-                        <label className="mb-1"><strong>Password</strong></label>
+                        <label className="mb-1">
+                          <strong>Password</strong>
+                        </label>
                         <input
                           type="password"
                           className="form-control"
@@ -180,7 +148,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      {showPopup && <NotificationPopup onClose={handlePopupClose} />}
     </>
   );
 };

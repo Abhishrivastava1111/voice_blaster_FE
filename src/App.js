@@ -1,4 +1,4 @@
-import react, { memo, Suspense } from "react";
+import react, { memo, Suspense, useEffect } from "react";
 import { ThreeCircles } from "react-loader-spinner";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -41,8 +41,15 @@ import GetAudioAprroval from "./Pages/Reseller/GetAudioApproval";
 import AudioApprovalStatus from "./Pages/Reseller/AudioApprovalStatus";
 import AdminAudioApproval from "./Pages/Admin/AdminAudioApproval";
 import AdminNotifications from "./Pages/Admin/AdminNotification";
+import setupAxiosInterceptors from "./functions/AxiosInterceptor";
 // import Notes from './Pages/User/Notes';
 const App = () => {
+
+  useEffect(() => {
+    // Set up Axios interceptors
+    setupAxiosInterceptors();
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/login",

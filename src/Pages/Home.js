@@ -1,24 +1,96 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Sidebar from '../Components/Sidebar';
-import Dashboard from '../Components/Dashboard';
-import Header from '../Components/Header';
-import UserDashboard from '../Components/UserDashboard';
-import moment from 'moment';
+import Sidebar from "../Components/Sidebar";
+import Dashboard from "../Components/Dashboard";
+import Header from "../Components/Header";
+import UserDashboard from "../Components/UserDashboard";
+import moment from "moment";
+import Swal from "sweetalert2";
+
 const Home = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const [previewUrl, setPreviewUrl] = useState(null); // For image preview
+  const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
   let role = localStorage.getItem("role");
+
+  // Fetch Notifications from Backend
+  const fetchNotifications = async () => {
+    let token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${BASE_URL}admin/getNotifications`, {
+        headers: {
+          "x-access-token": `${token}`,
+          version: "1.0.0",
+        },
+      });
+      setNotifications(response.data);
+
+      // If notification exists, prefill data
+      if (response.data.length > 0) {
+        const existingNotification = response.data[0];
+        setTitle(existingNotification.title);
+        setMessage(existingNotification.message);
+        setPreviewUrl(`${BASE_URL}${existingNotification.imageUrl}`);
+      }
+    } catch (error) {
+      console.error("Error fetching notifications", error);
+    }
+  };
+
   useEffect(() => {
     let token = localStorage.getItem("token");
-    console.log(token)
-    if (token == null) {
+    if (!token) {
       navigate("/login");
+    } else {
+      fetchNotifications();
     }
   }, []);
 
-  //getAllNotes
+  // Trigger popup when title, message, and previewUrl are set and user hasn't been notified
+  useEffect(() => {
+    if (
+      title &&
+      message &&
+      previewUrl &&
+      (!localStorage.getItem("isNotified") ||
+        localStorage.getItem("isNotified") === "false")
+    ) {
+      handlePreview();
+    }
+  }, [title, message, previewUrl]);
+
+  const handlePreview = () => {
+    Swal.fire({
+      title: title || "Notification",
+      text: message || "",
+      imageUrl: previewUrl,
+      imageAlt: "Notification Image",
+      width: "auto",
+      customClass: {
+        popup: "custom-swal-popup", // Apply a class to the popup for additional styling
+      },
+      imageWidth: "100%", // Make the image responsive to available space
+      imageHeight: "auto", // Let the image height adjust automatically
+      padding: "2em", // Add padding around the modal
+      confirmButtonText: "Okay",
+      didOpen: () => {
+        const swalPopup = Swal.getPopup();
+        swalPopup.style.minWidth = "400px"; // Minimum width
+        swalPopup.style.maxWidth = "800px"; // Maximum width
+        swalPopup.style.minHeight = "200px"; // Minimum height
+        swalPopup.style.maxHeight = "1000px"; // Maximum height
+      },
+    }).then(() => {
+      // Set isNotified to true in localStorage after the popup is closed
+      localStorage.setItem("isNotified", "true");
+    });
+  };
+
+  // Get all notes
   useEffect(() => {
     getAllNotes();
   }, []);
@@ -42,7 +114,6 @@ const Home = () => {
       .then(function (response) {
         if (response.data.success === false) {
           // toast.error(response.data.message);
-
           // if (response.data?.error_code === 461) {
           //   navigate("/login");
           // }
@@ -62,9 +133,7 @@ const Home = () => {
       });
   };
 
-
   const [campaignreport, setCampaignReport] = useState([]);
-
 
   useEffect(() => {
     getAllSendMessage();
@@ -99,11 +168,10 @@ const Home = () => {
       });
   };
 
-  const theme=localStorage.getItem("theme");
-  document.body.className=theme;
+  const theme = localStorage.getItem("theme");
+  document.body.className = theme;
 
   return (
-
     <div>
       {/********************
   Preloader start
@@ -138,15 +206,14 @@ const Home = () => {
         {/***********************************
       Content body start
   ************************************/}
-        <div className="content-body  " style={{height:"100vh"}}>
-          {
-            role!=3?(
-              <>
-            <UserDashboard/>
+        <div className="content-body  " style={{ height: "100vh" }}>
+          {role != 3 ? (
+            <>
+              <UserDashboard />
 
-            <div className="container-fluid">
-              <div className="row">
-                {/* <div className="col-xl-8 col-lg-8 col-xxl-8 col-sm-8">
+              <div className="container-fluid">
+                <div className="row">
+                  {/* <div className="col-xl-8 col-lg-8 col-xxl-8 col-sm-8">
                   <div className="card">
                     <div className="card-header">
                       <h4 className="card-title">Recent Campaign</h4>
@@ -192,31 +259,41 @@ const Home = () => {
                   </div>
                 </div> */}
 
-                <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-                  <div className="card">
-                    <div className="card-header">
-                      <h4 className="card-title">Notice</h4>
-                    </div>
+                  <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
+                    <div className="card">
+                      <div className="card-header">
+                        <h4 className="card-title">Notice</h4>
+                      </div>
 
-                    <div className="card-body pb-0">
-                      {/* <p>
+                      <div className="card-body pb-0">
+                        {/* <p>
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry.
                       </p> */}
-                      <ul class="list-group list-group-flush noticelist">
+                        <ul class="list-group list-group-flush noticelist">
+                          {notes.length > 0 &&
+                            notes.map((item, index) => (
+                              <li
+                                class="list-group-item d-flex px-0 justify-content-between blink_me d-inline noticelist"
+                                style={{ color: "red" }}
+                              >
+                                <div className="d-inline">
+                                  {" "}
+                                  <i
+                                    class="fa fa-circle "
+                                    aria-hidden="true"
+                                    style={{ fontSize: "10px" }}
+                                  />
+                                </div>
+                                &nbsp;&nbsp;
+                                <div className="d-inline">
+                                  {" "}
+                                  {`${item.title}`}
+                                </div>
+                              </li>
+                            ))}
 
-                      {notes.length > 0 &&
-                  notes.map((item, index) => (
-                    <li class="list-group-item d-flex px-0 justify-content-between blink_me d-inline noticelist" style={{color:"red"}}>
-                    <div className='d-inline'>   <i class="fa fa-circle " aria-hidden="true" style={{fontSize:"10px"}}/></div>&nbsp;&nbsp;
-                 <div className='d-inline'>  {`${ item.title}`}</div>
-                     
-                       
-                      </li>
-                     
-                  ))}
-                       
-                        {/* <li class="list-group-item d-flex px-0 justify-content-between">
+                          {/* <li class="list-group-item d-flex px-0 justify-content-between">
                           <strong>Education</strong>
                          
                         </li>
@@ -228,97 +305,118 @@ const Home = () => {
                           <strong>Operation Done</strong>
                          
                         </li> */}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            </>
-            ):(
-            <>
-            <Dashboard />
-
-            
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-xl-8 col-lg-8 col-xxl-8 col-sm-8">
-                  <div className="card">
-                    <div className="card-header">
-                      <h4 className="card-title">Recent Campaign</h4>
-                      
-                    </div>
-                    <div className="card-body">
-                      <div className="table-responsive recentOrderTable">
-                        <table className="table verticle-middle table-responsive-md">
-                          <thead>
-                            <tr>
-                            <th scope="col" className='tableHead'>S no.</th>
-                              {/* <th scope="col">Unique ID	.</th> */}
-                              <th scope="col " className='tableHead'>Number Of Count</th>
-                              <th scope="col" className='tableHead'>Created By</th>
-                              <th scope="col" className='tableHead'>Created At</th>
-                              <th scope="col" className='tableHead'>Status</th>
-                              {/* <th scope="col">Bills</th> */}
-                              {/* <th scope="col" /> */}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {campaignreport.length>0 && campaignreport.map((item,index)=>
-                                    <tr>
-                                    <td className='tabledata'>{index+1}</td>
-                                    {/* <td>{item._id}</td> */}
-                                    <td className='tabledata'>{item.msg_count}</td>
-                                    <td className='tabledata'>  {item.createBy_user_details.length > 0
-                                ? item.createBy_user_details[0].name
-                                : ""}</td>
-                                  <td className='tabledata'>
-                                  {moment(item.createdAt).format("DD-MM-YYYY hh:mm A ")}
-                                    </td>
-                                    <td className='tabledata'>
-                                      <span className="badge badge-rounded badge-warning">
-                                        {item.status}
-                                      </span>
-                                    </td>
-                          
-                                  </tr>
-                            )}
-                    
-             
-                          </tbody>
-                        </table>
+                        </ul>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <Dashboard />
 
-                <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-                  <div className="card">
-                    <div className="card-header">
-                      <h4 className="card-title">Notice</h4>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-xl-8 col-lg-8 col-xxl-8 col-sm-8">
+                    <div className="card">
+                      <div className="card-header">
+                        <h4 className="card-title">Recent Campaign</h4>
+                      </div>
+                      <div className="card-body">
+                        <div className="table-responsive recentOrderTable">
+                          <table className="table verticle-middle table-responsive-md">
+                            <thead>
+                              <tr>
+                                <th scope="col" className="tableHead">
+                                  S no.
+                                </th>
+                                {/* <th scope="col">Unique ID	.</th> */}
+                                <th scope="col " className="tableHead">
+                                  Number Of Count
+                                </th>
+                                <th scope="col" className="tableHead">
+                                  Created By
+                                </th>
+                                <th scope="col" className="tableHead">
+                                  Created At
+                                </th>
+                                <th scope="col" className="tableHead">
+                                  Status
+                                </th>
+                                {/* <th scope="col">Bills</th> */}
+                                {/* <th scope="col" /> */}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {campaignreport.length > 0 &&
+                                campaignreport.map((item, index) => (
+                                  <tr>
+                                    <td className="tabledata">{index + 1}</td>
+                                    {/* <td>{item._id}</td> */}
+                                    <td className="tabledata">
+                                      {item.msg_count}
+                                    </td>
+                                    <td className="tabledata">
+                                      {" "}
+                                      {item.createBy_user_details.length > 0
+                                        ? item.createBy_user_details[0].name
+                                        : ""}
+                                    </td>
+                                    <td className="tabledata">
+                                      {moment(item.createdAt).format(
+                                        "DD-MM-YYYY hh:mm A "
+                                      )}
+                                    </td>
+                                    <td className="tabledata">
+                                      <span className="badge badge-rounded badge-warning">
+                                        {item.status}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
+                  </div>
 
-                    <div class="card-body pb-0">
-                      {/* <p>
+                  <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
+                    <div className="card">
+                      <div className="card-header">
+                        <h4 className="card-title">Notice</h4>
+                      </div>
+
+                      <div class="card-body pb-0">
+                        {/* <p>
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry.
                       </p> */}
-                      <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush">
+                          {notes.length > 0 &&
+                            notes.map((item, index) => (
+                              <li
+                                class="list-group-item d-flex px-0 justify-content-between blink_me d-inline noticelist"
+                                style={{ color: "red" }}
+                              >
+                                <div className="d-inline">
+                                  {" "}
+                                  <i
+                                    class="fa fa-circle "
+                                    aria-hidden="true"
+                                    style={{ fontSize: "10px" }}
+                                  />
+                                </div>
+                                &nbsp;&nbsp;
+                                <div className="d-inline">
+                                  {" "}
+                                  {`${item.title}`}
+                                </div>
+                              </li>
+                            ))}
 
-                      {notes.length > 0 &&
-                  notes.map((item, index) => (
-                  
-                    <li class="list-group-item d-flex px-0 justify-content-between blink_me d-inline noticelist" style={{color:"red"}}>
-                      <div className='d-inline'>   <i class="fa fa-circle " aria-hidden="true" style={{fontSize:"10px"}}/></div>&nbsp;&nbsp;
-                   <div className='d-inline'>  {`${ item.title}`}</div>
-                       
-                         
-                        </li>
-                     
-                  ))}
-                       
-                        {/* <li class="list-group-item d-flex px-0 justify-content-between">
+                          {/* <li class="list-group-item d-flex px-0 justify-content-between">
                           <strong>Education</strong>
                          
                         </li>
@@ -330,20 +428,16 @@ const Home = () => {
                           <strong>Operation Done</strong>
                          
                         </li> */}
-                      </ul>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-
             </>
-            )
-             
-          }
-          
+          )}
         </div>
-{/* {
+        {/* {
   notes.length>0 && notes.map((item,index)=><p>{item.title}</p>)
 } */}
         {/* <div className="footer">
@@ -362,10 +456,7 @@ const Home = () => {
   ************************************/}
       </div>
     </div>
-
-
-
-  )
-}
+  );
+};
 
 export default memo(Home);
